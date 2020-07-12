@@ -1,0 +1,33 @@
+h1 {
+    color:orange;
+    text-align: center;
+}
+
+.formstyle {
+    text-align: center;
+}
+
+.showText {
+    resize: none;
+    overflow-y: scroll
+}
+
+.sendText {
+    resize: none;
+    overflow-y: scroll
+}
+
+.sendMessage {
+    position: relative;
+    top: -70px;
+    width: 100px;
+    height: 50px;
+}
+
+.sidebody {
+    float: left;
+}
+
+.mainbody {
+    float: center;
+}

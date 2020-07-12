@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>欢迎来到聊天室！！！</title>
+        <link rel="stylesheet" href="css/chatting.css" />
+    </head>
+    <body>
+        <div>
+            <div class="sidebody">
+                <p id="yourId">您的 ID：</p>
+            </div>
+            <div class="mainbody">
+                <h1>这里是1号聊天室，欢迎您的到来！！</h1>
+                <form class="formstyle">
+                    <textarea id="showText" class="showText" rows="40", cols="100" readonly="readonly"></textarea>
+                    <div>
+                        <textarea id="sendText" class="sendText" rows="10", cols="80"></textarea>
+                        <input class="sendMessage" type="button", value="发送", onclick="sendMessage()">
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <script>
+            let id = document.getElementById("yourId")
+            let curUrl = window.location.href
+            let paramStart = curUrl.indexOf("=")
+            let username = curUrl.substr(paramStart+1)
+            id.innerHTML = id.innerHTML + username
+            let text = ""
+
+            if(window.WebSocket){
+                console.log("浏览器支持websocket")
+            } else {
+                alert("浏览器不支持websocket")
+                window.location.href = index.html
+            }
+            let ws = new WebSocket("ws://localhost:12345/wudi?id=" + username)
+            ws.onopen = function(params) {
+                console.log("客户端连接成功！")
+            }
+            ws.onerror = function(params) {
+                // console.log("连接有问题啊！")
+                alert("连接有问题啊！")
+            }
+            ws.onmessage = function(param) {
+                let getMessage = param.data
+                console.log(getMessage)
+                let textpool = document.getElementById("showText").value
+                textpool = textpool + getMessage.split(":")[0] + "说:\n"
+                textpool = textpool + getMessage.split(":")[1] + "\n\n"
+                document.getElementById("showText").value = textpool   
+            } 
+
+            function sendMessage() {
+                text = document.getElementById("sendText").value
+                if(text == "") {
+                    alert("发送的文本不能为空哦！")
+                    return
+                } else {
+                    let textAddName = username + ":" + text
+                    ws.send(textAddName)
+                }
+                document.getElementById("sendText").value = ''
+            }
+        </script>
+    </body> 
+</html>

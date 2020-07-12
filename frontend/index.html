@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>欢迎来到聊天室！</title>
+        <!--引入css-->
+        <link rel="stylesheet" href="css/index.css" />
+    </head>
+
+    <body>
+        <h1>这里是属于你们的聊天室！</h1>
+        <p>请输入一个名字开始你的聊天吧：</p>
+        <form class="formstyle">
+            <input type="text" id="name">
+            <input type="button" value="进入" onclick="goToChatting()">
+        </form>
+
+
+        <script>
+            function goToChatting() {
+                console.log("开始操作")
+                
+                // must have the name!
+                nameText = document.getElementById("name")
+                if(nameText.value == '') {
+                    alert("必须要给自己起一个名字哦！")
+                    return
+                } else {
+                    // let ws = new WebSocket("ws://localhost:12345/wudi")
+
+                    // ws.onopen = function (params) {
+                    //     console.log("客户端连接成功")
+                    // } 
+                    window.location.href = "chatting.html?name=" + nameText.value
+                }
+            }
+        </script>
+    </body>
+</html>
