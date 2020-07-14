@@ -33,8 +33,8 @@
             if(window.WebSocket){
                 console.log("浏览器支持websocket")
             } else {
+                window.location.href = "index.html"
                 alert("浏览器不支持websocket")
-                window.location.href = index.html
             }
             let ws = new WebSocket("ws://localhost:12345/wudi?id=" + username)
             ws.onopen = function(params) {
@@ -42,6 +42,7 @@
             }
             ws.onerror = function(params) {
                 // console.log("连接有问题啊！")
+                window.location.href = "index.html"
                 alert("连接有问题啊！")
             }
             ws.onmessage = function(param) {
@@ -52,6 +53,10 @@
                 textpool = textpool + getMessage.split(":")[1] + "\n\n"
                 document.getElementById("showText").value = textpool   
             } 
+            ws.close = function(params) {
+                window.location.href = "index.html"
+                alert("连接被关闭了！")
+            }
 
             function sendMessage() {
                 text = document.getElementById("sendText").value
@@ -63,6 +68,10 @@
                     ws.send(textAddName)
                 }
                 document.getElementById("sendText").value = ''
+            }
+
+            window.onbeforeunload = function(event) {
+                event.returnValue = "aaa"
             }
         </script>
     </body> 
