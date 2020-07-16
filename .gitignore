@@ -1,3 +1,5 @@
 /.idea/
 /target/
 ChatProgram.iml
+/out/
+/src/META-INF

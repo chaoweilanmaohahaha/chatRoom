@@ -7,6 +7,7 @@ import io.vertx.core.http.ServerWebSocket;
 import io.vertx.core.http.WebSocket;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 
@@ -31,13 +32,15 @@ public class HappyChatting {
                 userMap.put(username, webSocket);
                 webSocket.handler(Buffer->{
                    String input = Buffer.getString(0, Buffer.length());
-                   for(String entry: userMap.keySet()) {
-                       ServerWebSocket ws = userMap.get(entry);
+                   Iterator<Map.Entry<String, ServerWebSocket>> iter = userMap.entrySet().iterator();
+                   while(iter.hasNext()) {
+                       Map.Entry entry = (Map.Entry)iter.next();
+                       ServerWebSocket ws = userMap.get(entry.getKey());
 
                        // 如果前端关闭了连接
                        if(ws.isClosed()) {
-                           System.out.print(entry + "关闭了连接！");
-                           userMap.remove(entry);
+                           System.out.print(entry.getKey() + "关闭了连接！");
+                           iter.remove();
                            continue;
                        }
                        ws.writeTextMessage(input);
@@ -48,7 +51,7 @@ public class HappyChatting {
             }
         });
 
-        server.listen(12345, "localhost", res->{
+        server.listen(12345, res->{
             if(res.succeeded()) {
                 System.out.println("successfully");
             } else {
