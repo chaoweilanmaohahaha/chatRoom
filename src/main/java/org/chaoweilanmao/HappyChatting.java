@@ -4,10 +4,8 @@ import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.http.ServerWebSocket;
-import io.vertx.core.http.WebSocket;
-import io.vertx.core.json.Json;
-import io.vertx.core.json.JsonObject;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -15,9 +13,10 @@ import java.util.Map;
 
 
 public class HappyChatting {
-    private static Logger logger = Logger.getLogger(HappyChatting.class);
+    private static Logger logger= LogManager.getLogger(HappyChatting.class);
 
     public static void main(String args[]) {
+        System.setProperty("vertx.logger-delegate-factory-class-name", "io.vertx.core.logging.Log4j2LogDelegateFactory");
         Vertx vertx = Vertx.vertx();
 
         HttpServerOptions options = new HttpServerOptions().setLogActivity(true);
