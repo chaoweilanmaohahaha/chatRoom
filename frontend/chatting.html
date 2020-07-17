@@ -31,11 +31,6 @@
             id.innerHTML = id.innerHTML + username
             let text = ""
 
-            let area = document.getElementById("showText")
-            area.addEventListener("onpropertychange", function(e){
-                area.scrollTop = area.scrollHeight
-            })
-
             if(window.WebSocket){
                 console.log("浏览器支持websocket")
             } else {
@@ -54,11 +49,15 @@
             }
             ws.onmessage = function(param) {
                 let getMessage = JSON.parse(param.data)
-                let textpool = document.getElementById("showText").value
+                let area = document.getElementById("showText")
+                let textpool = area.value
                 let date = new Date()
                 textpool = textpool + getMessage["name"] + "说: " + date.format("yyyy-MM-dd hh:mm:ss") +"\n"
                 textpool = textpool + getMessage["text"] + "\n\n"
                 document.getElementById("showText").value = textpool   
+
+                // 控制滚动条保持在最下方
+                area.scrollTop = area.scrollHeight
             } 
             ws.close = function(params) {
                 window.location.href = "index.html"
@@ -76,10 +75,6 @@
                     ws.send(textAddName)
                 }
                 document.getElementById("sendText").value = ''
-            }
-
-            window.onbeforeunload = function(event) {
-                event.returnValue = "aaa"
             }
 
             // 网上找的一种方法
